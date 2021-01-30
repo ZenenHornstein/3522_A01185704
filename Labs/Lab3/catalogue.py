@@ -1,25 +1,22 @@
 import difflib
 from Labs.Lab3.library_item_generator import LibraryItemGenerator
-from item_book import Book
-from item_DVD import  DVD
-from item_journal import Journal
-
+import item
 
 
 class Catalogue:
     """
-    Represents a catalogue.
+    Represents a catalogue that stores item of type Items.
     """
 
     def __init__(self, item_list):
         """
         Intialize the catalogue with a list of items.
-        :param item_list: a sequence of objects which which subclass item.
+        :param item_list: a sequence of objects which subclass item.
         """
         self._item_list = item_list
 
     def add_item(self):
-        item_to_add = LibraryItemGenerator.generate_item(classes=[Book, Journal, DVD])
+        item_to_add = LibraryItemGenerator.generate_item(classes=[item.Book, item.Journal, item.DVD])
         self._item_list.append(item_to_add)
 
     @property
@@ -55,7 +52,7 @@ class Catalogue:
                 break
         return found_book
 
-    def find_books(self, title):
+    def find_item(self, title):
         """
         Find books with the same and similar title.
         :param title: a string
@@ -67,8 +64,6 @@ class Catalogue:
         results = difflib.get_close_matches(title, title_list,
                                             cutoff=0.5)
         return results
-
-
 
     def remove_item(self, call_number):
         """

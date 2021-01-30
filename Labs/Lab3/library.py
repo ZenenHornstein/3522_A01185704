@@ -1,5 +1,5 @@
 """ This module houses the library"""
-from item_book import Book
+import item
 from catalogue import Catalogue
 import difflib
 
@@ -55,7 +55,7 @@ class Library:
                 self._catalogue.return_item(call_number)
             elif user_input == 4:
                 input_title = input("Enter the title of the item:")
-                found_titles = self._catalogue.find_books(input_title)
+                found_titles = self._catalogue.find_item(input_title)
                 print("We found the following:")
                 if len(found_titles) > 0:
                     for title in found_titles:
@@ -87,10 +87,10 @@ def generate_test_books():
     :return: a list
     """
     book_list = [
-        Book("100.200.300", "Harry Potter 1", 2, "J K Rowling"),
-        Book("999.224.854", "Harry Potter 2", 5, "J K Rowling"),
-        Book("631.495.302", "Harry Potter 3", 4, "J K Rowling"),
-        Book("123.02.204", "The Cat in the Hat", 1, "Dr. Seuss"),
+        item.Book("100.200.300", "Harry Potter 1", 2, "J K Rowling"),
+        item.Book("999.224.854", "Harry Potter 2", 5, "J K Rowling"),
+        item.Book("631.495.302", "Harry Potter 3", 4, "J K Rowling"),
+        item.Book("123.02.204", "The Cat in the Hat", 1, "Dr. Seuss"),
     ]
 
     return book_list
