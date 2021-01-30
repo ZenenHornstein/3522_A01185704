@@ -1,6 +1,9 @@
 import difflib
 from Labs.Lab3.library_item_generator import LibraryItemGenerator
 from item_book import Book
+from item_DVD import  DVD
+from item_journal import Journal
+
 
 
 class Catalogue:
@@ -11,29 +14,29 @@ class Catalogue:
     def __init__(self, item_list):
         """
         Intialize the catalogue with a list of items.
-        :param book_list: a sequence of objects which which subclass item.
+        :param item_list: a sequence of objects which which subclass item.
         """
         self._item_list = item_list
 
     def add_item(self):
-        item_to_add = LibraryItemGenerator.generate_item()
+        item_to_add = LibraryItemGenerator.generate_item(classes=[Book, Journal, DVD])
         self._item_list.append(item_to_add)
 
     @property
     def item_list(self):
         """
-        The  of the Catalogue
+        The  item list of the Catalogue
 
-        :return : the  of the Catalogue, as a
+        :return : the item list of the Catalogue, as a list
         """
         return self._item_list
 
     @item_list.setter
     def item_list(self, new_item_list):
         """
-        Set the  of the Catalogue
+        Set the item list of the Catalogue
 
-        :param : the  of the Catalogue
+        :param new_item_list: the new item list of the Catalogue
         :precondition :
         """
         self._item_list = new_item_list

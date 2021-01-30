@@ -1,9 +1,3 @@
-from item_book import Book
-from item_journal import Journal
-from item_DVD import DVD
-import dataclasses
-
-
 class LibraryItemGenerator:
 
     def __init__(self):
@@ -11,8 +5,14 @@ class LibraryItemGenerator:
 
     @staticmethod
     def generate_item(classes=None):
+        """
+        A static method which accepts a list of Class types, prompts the user for a class to create
+        then generates that class with inputs from the user.
 
-        classes = [Journal, Book, DVD] if not classes else classes
+        :param classes: a list of Classes
+        :return: instance of an type contained in classes
+        """
+
         choices = [x.__name__ for x in classes]
 
         # Print user options
@@ -20,7 +20,7 @@ class LibraryItemGenerator:
 
         for index, choice in enumerate(choices):
             print(f"{index} for {choice} ")
-        print(" or 7 to quit.")
+        print("or 7 to quit.")
 
         user_input = int(input("Please enter your choice "))
 
