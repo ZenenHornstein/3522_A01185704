@@ -1,8 +1,5 @@
 class LibraryItemGenerator:
 
-    def __init__(self):
-        pass
-
     @staticmethod
     def generate_item(classes=None):
         """
