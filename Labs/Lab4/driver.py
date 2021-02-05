@@ -23,15 +23,17 @@ def display_menu(acc_user):
         print("6. Quit")
         user_input = input("Please enter your choice (1-7)")
 
-
         if user_input == "2":
             acc_user.make_transaction()
         if user_input == "3":
             acc_user.view_transactions()
+        if user_input == "6":
+            print("Goodebye!")
+            exit(0)
 
 
 def main():
-    test_user = create_test_user()
+    test_user = UserType.create_test_user()
     display_menu(test_user)
 
     
