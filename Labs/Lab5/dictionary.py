@@ -90,7 +90,7 @@ class Dictionary:
             if user_input == "exitprogram":
                 with open("user_queries.txt", 'w', encoding='utf-8') as outfile:
                     for word in words_searched:
-                        outfile.write(f"{word}:")
+                        outfile.write(f"\n{word}:")
                         for definitions in words_searched[word]:
                             outfile.write(f"\n\t{definitions}")
                 print("Goodbye!")
