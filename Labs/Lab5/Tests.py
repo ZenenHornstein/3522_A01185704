@@ -25,10 +25,10 @@ class TestFileHandler(TestCase):
 
     def test_load_data_txt(self):
         ext = ".txt"
-        file = "test_write_lines.txt"
-        expected_data = ["firstline\n", "secondline\n", "thirdline"]
+        file = "test_write_lines_input.txt"
+        expected_data = ["1\n", "2\n", "3"]
         actual_data = FileHandler.load_data(file, ext)
-        self.assertEquals(expected_data, actual_data)
+        self.assertEqual(expected_data, actual_data)
 
     def test_load_data_raises_InvalidFileTypeError(self):
         ext = ".unsupported"
@@ -42,7 +42,7 @@ class TestFileHandler(TestCase):
         file = "test_write_lines.txt"
         expected_data = ["firstline\n", "secondline\n", "thirdline"]
         actual_data = FileHandler.load_data(file, ext)
-        self.assertEquals(expected_data, actual_data)
+        self.assertEqual(expected_data, actual_data)
 
 
 class TestDictionary(TestCase):
@@ -51,16 +51,12 @@ class TestDictionary(TestCase):
         D.load_dictionary("data.json")
         self.assertTrue(D.is_loaded())
 
-    def test_query_dictionary(self):
-        D = Dictionary()
-        D.load_dictionary("data.json")
-        definition = D.query_definition()
 
     def test_query_word(self):
         D = Dictionary()
         D.load_dictionary("data.json")
         definition = D.query_definition('gobble')
-        self.assertEquals(definition, ["To eat by swallowing large bits of food with little or no chewing."])
+        self.assertEqual(definition, ["To eat by swallowing large bits of food with little or no chewing."])
 
         pass
 
