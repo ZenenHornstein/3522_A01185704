@@ -33,10 +33,9 @@ class BookAnalyzer:
         stripped_text = {line for line in self.text if line != "\n"}
 
         # convert list of lines to list of words
-        words = []
-        for line in stripped_text:
-            words += line.split()
-        stripped_text= words
+        #words = []
+        stripped_text = {word for sentence in stripped_text for word in sentence.split()}
+
 
         # remove common punctuation from words
         temp_text = set()
