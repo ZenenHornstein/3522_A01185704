@@ -11,7 +11,7 @@ class LibraryItemGenerator:
         """
 
         choices = {x.__name__ for x in classes}
-    
+
 
         # Print user options
         print("\nWelcome to the Item Generator!")
@@ -22,7 +22,7 @@ class LibraryItemGenerator:
 
         user_input = int(input("Please enter your choice "))
 
-        while user_input not in (0, 1, 2, 7):
+        while user_input not in {0, 1, 2, 7}:
             user_input = int(input("Please enter a valid choice "))
 
         if user_input == 7:
