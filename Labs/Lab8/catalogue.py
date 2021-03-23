@@ -1,6 +1,5 @@
 import difflib
 from Labs.Lab8.library_item_generator import LibraryItemGenerator
-from Labs.Lab8 import item
 
 
 class Catalogue:
@@ -16,8 +15,9 @@ class Catalogue:
         self._item_list = item_list
 
     def add_item(self):
-        item_to_add = LibraryItemGenerator.generate_item(classes=[item.Book, item.Journal, item.DVD])
-        self._item_list.append(item_to_add)
+        item_to_add = LibraryItemGenerator.generate_item()
+      #  self._item_list.append(item_to_add)
+        self._item_list.add(item_to_add)
 
     @property
     def item_list(self):

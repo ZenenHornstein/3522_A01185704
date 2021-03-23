@@ -67,7 +67,7 @@ class Library:
                 self._catalogue.add_item()
 
             elif user_input == 6:
-                call_number = input("Enter the call number of the book")
+                call_number = input("Enter the call number of the item to remove")
                 self._catalogue.remove_item(call_number)
 
             elif user_input == 7:

@@ -49,7 +49,7 @@ class Book(Item):
     it's call number.
     """
 
-    def __init__(self, call_number=None, title=None, num_copies=1, author=None):
+    def __init__(self, call_number, title, author, num_copies=1):
         """
         :param call_num: a string
         :param title: a string
@@ -58,18 +58,10 @@ class Book(Item):
         :precondition call_num: a unique identifier
         :precondition num_copies: a positive integer
         """
-        if not call_number:
-            call_number = input("Please enter a call number for the book ")
-        if not title:
-            title = input("Please enter a name for the book. ")
-        if not num_copies:
-            num_copies = int(input("How many copies are there? "))
-        if not author:
-            author = input("Who is the author of this book? ")
 
-        super().__init__(call_number, title)
+        super().__init__(call_number, title, num_copies)
         self._author = author
-        self._num_copies = num_copies
+
 
     # @property
     # def title(self):
@@ -133,24 +125,9 @@ class Book(Item):
                f"Number of copies: {self._num_copies}"
 
 
-
 class DVD(Item):
-    def __init__(self, call_number=None, name=None, release_date=None, region_code=None):
-
-        if not call_number:
-            call_number = input("Please enter a call number ")
-
-        if not name:
-            name = input("Please enter a name ")
-
-        if not release_date:
-            release_date = input("Please enter a release date. ")
-
-        if not region_code:
-            region_code = input("Please enter a region code ")
-
+    def __init__(self, call_number, name, release_date, region_code):
         super().__init__(call_number, name)
-
         self._release_date = release_date
         self._region_code = region_code
 
@@ -165,17 +142,7 @@ class DVD(Item):
 
 class Journal(Item):
 
-    def __init__(self, call_number=None, name=None, issue_number=None, publisher=None):
-
-        if not call_number:
-            call_number = input("Please enter a call number for the journal. ")
-        if not name:
-            name = input("Please enter a name for the journal. ")
-        if not publisher:
-            publisher = input("Please enter a Publisher for the journal. ")
-        if not issue_number:
-            issue_number = int(input("Pleas enter a issue_number for the journal. "))
-
+    def __init__(self, call_number, name, issue_number, publisher):
         super().__init__(call_number, name)
         self._publisher = publisher
         self._issue_number = issue_number
