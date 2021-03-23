@@ -10,10 +10,12 @@ class LibraryItemGenerator:
         :return: instance of an type contained in classes
         """
 
-        choices = [x.__name__ for x in classes]
+        choices = (x.__name__ for x in classes)
+        print(type(choices), "GOOOOOOOO\n\n\n\nOOOOOOOBLE")
 
         # Print user options
         print("\nWelcome to the Item Generator!")
+        print(type(choices), "GOOOOOOOO\n\n\n\nOOOOOOOBLE")
 
         for index, choice in enumerate(choices):
             print(f"{index} for {choice} ")

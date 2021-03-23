@@ -161,7 +161,7 @@ class DVD(Item):
                f"Region code: {self._region_code}\n"\
                f"Number of copies {self._num_copies}"
 
-from item import Item
+
 
 class Journal(Item):
 

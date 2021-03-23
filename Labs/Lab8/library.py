@@ -1,6 +1,6 @@
 """ This module houses the library"""
-import item
-from catalogue import Catalogue
+from Labs.Lab8.item import Item
+from Labs.Lab8.catalogue import Catalogue
 import difflib
 
 class Library:
@@ -87,10 +87,10 @@ def generate_test_books():
     :return: a list
     """
     book_list = [
-        item.Book("100.200.300", "Harry Potter 1", 2, "J K Rowling"),
-        item.Book("999.224.854", "Harry Potter 2", 5, "J K Rowling"),
-        item.Book("631.495.302", "Harry Potter 3", 4, "J K Rowling"),
-        item.Book("123.02.204", "The Cat in the Hat", 1, "Dr. Seuss"),
+        Item.Book("100.200.300", "Harry Potter 1", 2, "J K Rowling"),
+        Item.Book("999.224.854", "Harry Potter 2", 5, "J K Rowling"),
+        Item.Book("631.495.302", "Harry Potter 3", 4, "J K Rowling"),
+        Item.Book("123.02.204", "The Cat in the Hat", 1, "Dr. Seuss"),
     ]
 
     return book_list
