@@ -10,7 +10,8 @@ class LibraryItemGenerator:
         :return: instance of an type contained in classes
         """
 
-        choices = [x.__name__ for x in classes]
+        choices = {x.__name__ for x in classes}
+    
 
         # Print user options
         print("\nWelcome to the Item Generator!")
