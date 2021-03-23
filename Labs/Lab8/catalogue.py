@@ -1,6 +1,6 @@
 import difflib
 from Labs.Lab8.library_item_generator import LibraryItemGenerator
-from Labs.Lab8.item import Item
+from Labs.Lab8 import item
 
 
 class Catalogue:
