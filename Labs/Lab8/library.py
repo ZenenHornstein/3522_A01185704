@@ -2,12 +2,15 @@
 from Labs.Lab8 import item
 from Labs.Lab8.catalogue import Catalogue
 import difflib
+import sys
+
 
 class Library:
     """
     The Library consists of a list of books and provides an
     interface for users to check out, return and find books.
     """
+
     def __init__(self, catalogue: Catalogue):
         """
         Intialize the library with a list of books.
@@ -15,15 +18,22 @@ class Library:
         """
         self._catalogue = catalogue
 
-
-
     def display_library_menu(self):
         """
         Display the library menu allowing the user to either access the
         list of books, check out, return, find, add, remove a book.
         """
+
+        function_lookup = {"1": self._catalogue.display_available_items,
+                           "2": self._catalogue.check_out,
+                           "3": self._catalogue.return_item,
+                           "4": self._catalogue.find_item,
+                           "5": self._catalogue.add_item,
+                           "6": self._catalogue.remove_item,
+
+                           }
         user_input = None
-        while user_input != 7:
+        while True:
             print("\nWelcome to the Library!")
             print("-----------------------")
             print("1. Display all Items")
@@ -33,52 +43,16 @@ class Library:
             print("5. Add an item")
             print("6. Remove an item")
             print("7. Quit")
-            string_input = input("Please enter your choice (1-7)")
 
-            #handle user pressing only enter in menu
-            if(string_input == ''):
-                continue
+            user_input = input("Please enter your choice")
+            while user_input not in ("1", "2", "3", "4", "5", "6", "7"):
+                user_input = input("Please enter a valid choice")
 
-            user_input = int(string_input)
+            if user_input == "7":
+                print("Thanks for visiting!")
+                sys.exit(0)
 
-            if user_input == 1:
-                self._catalogue.display_available_items()
-               # self.display_available_books()
-                user_input = input("Press Enter to continue")
-            elif user_input == 2:
-                call_number = input("Enter the call number of the item"
-                                    " you wish to check out.")
-                self._catalogue.check_out(call_number)
-            elif user_input == 3:
-                call_number = input("Enter the call number of the item"
-                                    " you wish to return.")
-                self._catalogue.return_item(call_number)
-            elif user_input == 4:
-                input_title = input("Enter the title of the item:")
-                found_titles = self._catalogue.find_item(input_title)
-                print("We found the following:")
-                if len(found_titles) > 0:
-                    for title in found_titles:
-                        print(title)
-                else:
-                    print("Sorry! We found nothing with that title")
-
-            elif user_input == 5:
-                self._catalogue.add_item()
-
-            elif user_input == 6:
-                call_number = input("Enter the call number of the item to remove")
-                self._catalogue.remove_item(call_number)
-
-            elif user_input == 7:
-                pass
-            else:
-                print("Could not process the input. Please enter a"
-                      " number from 1 - 7.")
-
-        print("Thank you for visiting the Library.")
-
-
+            function_lookup.get(user_input)()
 
 
 def generate_test_books():
@@ -87,10 +61,10 @@ def generate_test_books():
     :return: a set
     """
     book_list = {
-        item.Book("100.200.300", "Harry Potter 1", 2, "J K Rowling"),
-        item.Book("999.224.854", "Harry Potter 2", 5, "J K Rowling"),
-        item.Book("631.495.302", "Harry Potter 3", 4, "J K Rowling"),
-        item.Book("123.02.204", "The Cat in the Hat", 1, "Dr. Seuss"),
+        item.Book("100.200.300", "Harry Potter 1", num_copies=2, author="J K Rowling"),
+        item.Book("999.224.854", "Harry Potter 2", num_copies=5, author="J K Rowling"),
+        item.Book("631.495.302", "Harry Potter 3", num_copies=4, author="J K Rowling"),
+        item.Book("123.02.204", "The Cat in the Hat", num_copies=1, author="Dr. Seuss"),
     }
 
     return book_list

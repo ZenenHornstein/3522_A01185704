@@ -113,7 +113,7 @@ class Book(Item):
         Returns True if the book is available and False otherwise
         :return: A Boolean
         """
-        if self._num_copies > 0:
+        if self.get_num_copies() > 0:
             return True
         else:
             return False
@@ -122,7 +122,7 @@ class Book(Item):
         return f"---- Book: {self._title} ----\n" \
                f"Call Number: {self._call_number}\n" \
                f"Author: {self._author}\n" \
-               f"Number of copies: {self._num_copies}"
+               f"Number of copies: {self._num_copies}\n"
 
 
 class DVD(Item):

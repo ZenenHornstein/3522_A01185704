@@ -45,6 +45,7 @@ class Catalogue:
         :param call_number: a string
         :return: book object if found, None otherwise
         """
+
         found_book = None
         for library_book in self._item_list:
             if library_book.call_number == call_number:
@@ -52,18 +53,28 @@ class Catalogue:
                 break
         return found_book
 
-    def find_item(self, title):
+    def find_item(self, title=None):
         """
         Find books with the same and similar title.
         :param title: a string
         :return: a list of titles.
         """
+
+        if title is None:
+            title = input("Please enter the title of the item to lookup")
         title_list = set()
         for library_book in self._item_list:
             title_list.add(library_book.get_title())
         results = difflib.get_close_matches(title, title_list,
                                             cutoff=0.5)
-        return results
+
+        if not results:
+            print("Unable to find that title!")
+            return
+        else:
+            print("We found the following:")
+            for title in results:
+                print(title)
 
     def remove_item(self, call_number):
         """
@@ -120,30 +131,40 @@ class Catalogue:
         else:
             return False
 
-    def check_out(self, call_number):
+    def check_out(self, call_number=None):
         """
         Check out an book with the given call number from the library.
         :param call_number: a string
         :precondition call_number: a unique identifier
         """
+
+        if call_number is None:
+            call_number = input("Please enter the call number of the item to check out")
+
         library_book = self._retrieve_item_by_call_number(call_number)
+        if not library_book:
+            print(f"Could not find book with call number {call_number}"
+                  f". Checkout failed.")
+            return
+
         if library_book.check_availability():
             status = self.reduce_item_count(call_number)
             if status:
                 print("Checkout complete!")
             else:
-                print(f"Could not find book with call number {call_number}"
+                print(f"No copies left for call number  {call_number}"
                       f". Checkout failed.")
-        else:
-            print(f"No copies left for call number {call_number}"
-                  f". Checkout failed.")
 
-    def return_item(self, call_number):
+
+    def return_item(self, call_number=None):
         """
         Return an book with the given call number from the library.
         :param call_number: a string
         :precondition call_number: a unique identifier
         """
+
+        if call_number is None:
+            call_number = input("Please enter the call number of the item to return")
         status = self.increment_item_count(call_number)
         if status:
             print("book returned successfully!")

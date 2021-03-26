@@ -7,6 +7,7 @@ mutually_exclusive.add_argument('--inputdata', metavar='"name or id"', action='s
 args = parser.parse_args()
 
 def main():
+    print(args)
     pass
     
 if __name__ == '__main__':
