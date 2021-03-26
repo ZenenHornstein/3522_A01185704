@@ -1,5 +1,6 @@
 import abc
 
+
 class Item(abc.ABC):
 
     def __init__(self, call_number, title, num_copies=1):
@@ -12,15 +13,14 @@ class Item(abc.ABC):
 
     def increment_number_of_copies(self):
         """
-        Set's the number of copies of an book
-        :param value: a positive integer
+        Increment's the number of copies of an book
+
         """
         self._num_copies += 1
 
     def decrement_number_of_copies(self):
         """
-        Set's the number of copies of an book
-        :param value: a positive integer
+        reduce the number of copies of an book
         """
         self._num_copies -= 1
 
@@ -34,7 +34,7 @@ class Item(abc.ABC):
         return self._call_number
 
     @call_number.setter
-    def call_number(self, call_number: int) -> int:
+    def call_number(self, call_number: int):
         """
 
       :param call_number: the call number
@@ -51,7 +51,7 @@ class Book(Item):
 
     def __init__(self, call_number, title, author, num_copies=1):
         """
-        :param call_num: a string
+        :param call_number: a string
         :param title: a string
         :param num_copies: an int
         :param author: a string
@@ -62,7 +62,6 @@ class Book(Item):
         super().__init__(call_number, title, num_copies)
         self._author = author
 
-
     # @property
     # def title(self):
     #     return self._title
@@ -70,9 +69,6 @@ class Book(Item):
     # @title.setter
     # def title(self, new_title):
     #     self._title = new_title
-
-
-
 
     def get_num_copies(self):
         """
@@ -135,9 +131,8 @@ class DVD(Item):
         return f"---- DVD: {self.get_title()} ----\n" \
                f"Call Number: {self.call_number}\n" \
                f"Release data: {self._release_date}\n" \
-               f"Region code: {self._region_code}\n"\
+               f"Region code: {self._region_code}\n" \
                f"Number of copies {self._num_copies}"
-
 
 
 class Journal(Item):
@@ -147,13 +142,9 @@ class Journal(Item):
         self._publisher = publisher
         self._issue_number = issue_number
 
-
-
-
     def __str__(self):
         return f"---- Journal: {self._title} ----\n" \
                f"Call Number: {self._call_number}\n" \
                f"Issue Number: {self._issue_number}\n" \
-               f"Publisher: {self._publisher}\n"\
+               f"Publisher: {self._publisher}\n" \
                f"Number of copies : {self._num_copies}"
-

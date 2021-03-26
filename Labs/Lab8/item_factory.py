@@ -20,7 +20,6 @@ class BookFactory(ItemFactory):
         call_number = input("Please enter a call number for the book. ")
         title = input("Please enter a title for the book. ")
         author = input("Please enter an author for the book. ")
-      #  issue_number = int(input("Pleas enter a issue_number for the book. "))
         return Book(call_number=call_number, title=title, author=author)
 
 

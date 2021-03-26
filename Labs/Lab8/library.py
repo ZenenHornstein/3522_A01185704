@@ -13,8 +13,7 @@ class Library:
 
     def __init__(self, catalogue: Catalogue):
         """
-        Intialize the library with a list of books.
-        :param book_list: a sequence of book objects.
+        Intialize the library with a catalogue
         """
         self._catalogue = catalogue
 
