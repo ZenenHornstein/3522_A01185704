@@ -76,12 +76,15 @@ class Catalogue:
             for title in results:
                 print(title)
 
-    def remove_item(self, call_number):
+    def remove_item(self, call_number=None):
         """
         Remove an existing book from the library
         :param call_number: a string
         :precondition call_number: a unique identifier
         """
+
+        if call_number is None:
+            call_number = input("Please enter the call number of the item to remove.")
         found_book = self._retrieve_item_by_call_number(call_number)
         if found_book:
             self._item_list.remove(found_book)
@@ -165,9 +168,11 @@ class Catalogue:
 
         if call_number is None:
             call_number = input("Please enter the call number of the item to return")
-        status = self.increment_item_count(call_number)
-        if status:
-            print("book returned successfully!")
+
+
+        found_book = self._retrieve_item_by_call_number(call_number)
+        if found_book:
+            self.increment_item_count(call_number=call_number)
+            print("Item returned succesfully!")
         else:
-            print(f"Could not find book with call number {call_number}"
-                  f". Return failed.")
+            print(f"No items found with call number {call_number}. Return failed")
