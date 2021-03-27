@@ -14,6 +14,7 @@ class ItemFactory(abc.ABC):
     def create_item():
         pass
 
+
 class BookFactory(ItemFactory):
     @staticmethod
     def create_item():
@@ -41,4 +42,3 @@ class DVDFactory(ItemFactory):
         release_date = input("Please enter a release date for the DVD. ")
         region_code = input("Please enter a region code for the DVD ")
         return DVD(call_number=call_number, name=name, release_date=release_date, region_code=region_code)
-

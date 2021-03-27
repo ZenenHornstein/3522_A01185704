@@ -2,6 +2,7 @@ from Labs.Lab8.item_factory import BookFactory
 from Labs.Lab8.item_factory import DVDFactory
 from Labs.Lab8.item_factory import JournalFactory
 
+
 class LibraryItemGenerator:
 
     @staticmethod
