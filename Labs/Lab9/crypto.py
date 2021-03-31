@@ -72,6 +72,12 @@ class BaseRequestHandler(abc.ABC):
 
 class EncryptionValidationHandler(BaseRequestHandler):
     def handle_request(self, request: Request) -> (str, bool):
+        """
+        First handler in the chain, Verifies that the correct encryption mode has been set in addition to verifying
+        That a data source has been set.
+        :param request: the request object
+        :return: tuple(str, bool) Where str is an error message and bool indicates success or failure.
+        """
 
         # Validate that we are in Encrypt Mode
         if request.encryption_state != CryptoMode.EN:
@@ -94,6 +100,13 @@ class EncryptionValidationHandler(BaseRequestHandler):
 
 class EncryptionProccessorHandler(BaseRequestHandler):
     def handle_request(self, request: Request) -> (str, bool):
+
+        """
+        Secnd handler in the chain, Sets the data_input variable to be the contents of a file if provided as input.
+        :param request: the request object
+        :return: tuple(str, bool) Where str is an error message and bool indicates success or failure.
+
+        """
         # Check to see if we are reading from a file
         if request.data_input is None and request.input_file:
             with open(file=request.input_file, mode="r", encoding='utf-8') as infile:
@@ -110,11 +123,12 @@ class EncryptionProccessorHandler(BaseRequestHandler):
 class EncryptionResultHandler(BaseRequestHandler):
 
     def handle_request(self, request: Request) -> (str, bool):
+        """
+        Last handler in the chain, Encrypts the message and outputs accordingly.
+        :param request: the request object
+        :return: tuple(str, bool) Where str is an error message and bool indicates success or failure.
 
-        if not request.data_input:
-            return f"Error. {self.__class__} recieved request with no request.data_input", False
-        if not request.key:
-            return f"Error. {self.__class__} recieved request with no Key", False
+        """
 
         key_OBJ = des.DesKey(bytes(request.key, 'utf-8'))
         request.result = key_OBJ.encrypt(bytes(request.data_input, 'utf-8'), padding=True)
@@ -127,13 +141,19 @@ class EncryptionResultHandler(BaseRequestHandler):
                 with open(request.output, 'wb') as outfile:
                     outfile.write(request.result)
 
-        return "Succesfully Encrypted}", True
+        return "Succesfully Encrypted", True
 
 
 #
 #
 class DecryptionValidationHandler(BaseRequestHandler):
     def handle_request(self, request: Request) -> (str, bool):
+        """
+        First handler in the chain, Verifies that the correct mode has been chosen and atleast one data source set.
+        :param request: the request object
+        :return: tuple(str, bool) Where str is an error message and bool indicates success or failure.
+
+        """
         # Ensure we are in Encrypt Mode
         if request.encryption_state != CryptoMode.DE:
             return f"Error. {self.__class__} recieved request with CryptoMode = EN", False
@@ -154,6 +174,12 @@ class DecryptionValidationHandler(BaseRequestHandler):
 
 class DecryptionProccessorHandler(BaseRequestHandler):
     def handle_request(self, request: Request) -> (str, bool):
+        """
+        Second  handler in the chain. Reads from file and stores as data_input.
+        :param request: the request object
+        :return: tuple(str, bool) Where str is an error message and bool indicates success or failure.
+
+        """
         if request.data_input is None and request.input_file:
             print(f"{self.__class__} Reading {request.input_file}")
             with open(file=request.input_file, mode="rb") as infile:
@@ -171,6 +197,11 @@ class DecryptionProccessorHandler(BaseRequestHandler):
 class DecryptionResultHandler(BaseRequestHandler):
 
     def handle_request(self, request: Request) -> (str, bool):
+        """
+        Final handler in the chain. decrypts message and outputs.
+        :param request: the request object
+        :return: tuple(str, bool) Where str is an error message and bool indicates success or failure.
+        """
         key_OBJ = des.DesKey(bytes(request.key, 'utf-8'))
         message = request.data_input
 
@@ -231,6 +262,9 @@ def setup_request_commandline() -> Request:
 class Crypto:
 
     def __init__(self):
+        """
+        Sets up the chain of responsibility.
+        """
         # print("\n\n--------- setup handlers ----------")
         # EncryptionValidationHandler -> EncryptionProccessorHandler -> EncryptionResultHandler
 
@@ -254,6 +288,11 @@ class Crypto:
         self.encryption_start_handler = encryption_validator
 
     def execute_request(self, request: Request):
+        """
+        Execute the corrrect chain of responsibility handler depending on Encryption or Decryption Mode.
+        :param request: the Request to pass to handlers.
+        :return:
+        """
         if request.encryption_state == CryptoMode.EN:
             result = self.encryption_start_handler.handle_request(request)
         if request.encryption_state == CryptoMode.DE:
