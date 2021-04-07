@@ -1,8 +1,8 @@
 import abc
-from .PokedexObject import Stat, Move, Ability, Pokemon
-from .urlEnum import urlEnum
+from .pokedex_object import Stat, Move, Ability, Pokemon
+from .url_enum import urlEnum
 import asyncio
-from .AsyncRequest import process_requests
+from .async_request import process_requests
 
 import sys
 import aiohttp

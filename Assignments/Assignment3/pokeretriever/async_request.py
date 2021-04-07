@@ -1,7 +1,7 @@
 import aiohttp
 import asyncio
-from .urlEnum import urlEnum
-from .PokedexObject import Pokemon, Move
+from .url_enum import urlEnum
+from .pokedex_object import Pokemon, Move
 
 
 async def get_pokemon_api(id_: int, url: str, session: aiohttp.ClientSession) -> dict:

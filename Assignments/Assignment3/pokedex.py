@@ -1,6 +1,6 @@
 import argparse
 import request
-from pokeretriever import AsyncRequest, PokedexObject, ModeEnum
+from pokeretriever import async_request, pokedex_object, mode_enum
 import asyncio
 from facade_pokeretriever import FacadePokeretriever
 import sys

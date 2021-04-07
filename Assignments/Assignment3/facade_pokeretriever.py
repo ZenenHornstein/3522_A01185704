@@ -1,10 +1,10 @@
 from request import Request
-from pokeretriever import AsyncRequest
-from pokeretriever.ModeEnum import modeEnum
-from pokeretriever.urlEnum import urlEnum
+from pokeretriever import async_request
+from pokeretriever.mode_enum import modeEnum
+from pokeretriever.url_enum import urlEnum
 
-from pokeretriever.AsyncRequestParser import StatParser, MoveParser, AbilityParser, PokemonParser
-from pokeretriever.PokedexObject import Stat, Move, Pokemon, Ability
+from pokeretriever.async_request_parser import StatParser, MoveParser, AbilityParser, PokemonParser
+from pokeretriever.pokedex_object import Stat, Move, Pokemon, Ability
 import asyncio
 import sys
 
@@ -37,7 +37,7 @@ class FacadePokeretriever:
         if request.inputdata and not request.inputfile:
             print("Request inputdata")
             request.inputdata = [request.inputdata]
-            results = loop.run_until_complete(AsyncRequest.process_requests(request.inputdata, url=target_url))
+            results = loop.run_until_complete(async_request.process_requests(request.inputdata, url=target_url))
             results = [parser.parse_extended_response(x) for x in results]
 
 
@@ -47,18 +47,18 @@ class FacadePokeretriever:
                 querys = infile.readlines()
                 querys = [i.strip() for i in querys]
                 request.inputdata = querys
-                results = loop.run_until_complete(AsyncRequest.process_requests(querys, url=target_url))
+                results = loop.run_until_complete(async_request.process_requests(querys, url=target_url))
                 results = [parser.parse_extended_response(x) for x in results]
 
 
         if request.inputfile and not request.expanded and request.mode == modeEnum.POKEMON.value:
             print("HERE IS INPUT FILE AND NOT EXPANDED AND POKEMON")
-            results = loop.run_until_complete(AsyncRequest.process_requests(querys, url=target_url))
+            results = loop.run_until_complete(async_request.process_requests(querys, url=target_url))
             results = [parser.parse_response(x) for x in results]
 
         if request.inputfile and request.expanded and request.mode == modeEnum.POKEMON.value:
             print("HERE IS INPUT FILE AND EXPANDED AND POKEMON")
-            results = loop.run_until_complete(AsyncRequest.process_requests(querys, url=target_url))
+            results = loop.run_until_complete(async_request.process_requests(querys, url=target_url))
             results = [parser.parse_extended_response(x) for x in results]
 
 
