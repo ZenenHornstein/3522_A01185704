@@ -19,22 +19,22 @@ class CryptoMode(enum.Enum):
 
 class Request:
     """
-    The request object represents a request to either encrypt or decrypt
-    certain data. The request object comes with certain accompanying
+    The response object represents a response to either encrypt or decrypt
+    certain data. The response object comes with certain accompanying
     configuration options as well as a field that holds the result. The
     attributes are:
         - encryption_state: 'en' for encrypt, 'de' for decrypt
         - data_input: This is the string data that needs to be encrypted or
-        decrypted. This is None if the data is coming in from a file.
-        - input_file: The text file that contains the string to be encrypted or
-        decrypted. This is None if the data is not coming from a file and is
+        decrypted. This is None if the data is coming in from a print_loc.
+        - input_file: The text print_loc that contains the string to be encrypted or
+        decrypted. This is None if the data is not coming from a print_loc and is
         provided directly.
         - output: This is the method of output that is requested. At this
         moment the program supports printing to the console or writing to
-        another text file.
+        another text print_loc.
         - key: The Key value to use for encryption or decryption.
         - result: Placeholder value to hold the result of the encryption or
-        decryption. This does not usually come in with the request.
+        decryption. This does not usually come in with the response.
 
     """
 
@@ -48,7 +48,7 @@ class Request:
 
     def __str__(self):
         return f"Request: State: {self.encryption_state}, Data: {self.data_input}" \
-               f", Input file: {self.input_file}, Output: {self.output}, " \
+               f", Input print_loc: {self.input_file}, Output: {self.output}, " \
                f"Key: {self.key}"
 
 
@@ -75,21 +75,21 @@ class EncryptionValidationHandler(BaseRequestHandler):
         """
         First handler in the chain, Verifies that the correct encryption mode has been set in addition to verifying
         That a data source has been set.
-        :param request: the request object
+        :param request: the response object
         :return: tuple(str, bool) Where str is an error message and bool indicates success or failure.
         """
 
         # Validate that we are in Encrypt Mode
         if request.encryption_state != CryptoMode.EN:
-            return f"Error. {self.__class__} recieved request with CryptoMode = DE", False
+            return f"Error. {self.__class__} recieved response with CryptoMode = DE", False
 
         # Validate that we have a key
         if not request.key:
-            return f"Error. {self.__class__} recieved request with No key", False
+            return f"Error. {self.__class__} recieved response with No key", False
 
         # Validate we have some sort of data
         if not request.data_input and not request.input_file:
-            return f"Error. {self.__class__} recieved request with No data source", False
+            return f"Error. {self.__class__} recieved response with No data source", False
 
         # If we are the last handler in the chain of responsibility
         if not self.next_handler:
@@ -102,12 +102,12 @@ class EncryptionProccessorHandler(BaseRequestHandler):
     def handle_request(self, request: Request) -> (str, bool):
 
         """
-        Secnd handler in the chain, Sets the data_input variable to be the contents of a file if provided as input.
-        :param request: the request object
+        Secnd handler in the chain, Sets the data_input variable to be the contents of a print_loc if provided as input.
+        :param request: the response object
         :return: tuple(str, bool) Where str is an error message and bool indicates success or failure.
 
         """
-        # Check to see if we are reading from a file
+        # Check to see if we are reading from a print_loc
         if request.data_input is None and request.input_file:
             with open(file=request.input_file, mode="r", encoding='utf-8') as infile:
                 lines = infile.readlines()
@@ -125,7 +125,7 @@ class EncryptionResultHandler(BaseRequestHandler):
     def handle_request(self, request: Request) -> (str, bool):
         """
         Last handler in the chain, Encrypts the message and outputs accordingly.
-        :param request: the request object
+        :param request: the response object
         :return: tuple(str, bool) Where str is an error message and bool indicates success or failure.
 
         """
@@ -150,20 +150,20 @@ class DecryptionValidationHandler(BaseRequestHandler):
     def handle_request(self, request: Request) -> (str, bool):
         """
         First handler in the chain, Verifies that the correct mode has been chosen and atleast one data source set.
-        :param request: the request object
+        :param request: the response object
         :return: tuple(str, bool) Where str is an error message and bool indicates success or failure.
 
         """
         # Ensure we are in Encrypt Mode
         if request.encryption_state != CryptoMode.DE:
-            return f"Error. {self.__class__} recieved request with CryptoMode = EN", False
+            return f"Error. {self.__class__} recieved response with CryptoMode = EN", False
 
         # Validate that we have atleast a single data source
         if not request.data_input and not request.input_file:
-            return f"Error. {self.__class__} recieved request with no Data source", False
+            return f"Error. {self.__class__} recieved response with no Data source", False
 
         if not request.key:
-            return f"Error. {self.__class__} recieved request with no key", False
+            return f"Error. {self.__class__} recieved response with no key", False
 
         # If we are the last handler in the chain of responsibility
         if not self.next_handler:
@@ -175,8 +175,8 @@ class DecryptionValidationHandler(BaseRequestHandler):
 class DecryptionProccessorHandler(BaseRequestHandler):
     def handle_request(self, request: Request) -> (str, bool):
         """
-        Second  handler in the chain. Reads from file and stores as data_input.
-        :param request: the request object
+        Second  handler in the chain. Reads from print_loc and stores as data_input.
+        :param request: the response object
         :return: tuple(str, bool) Where str is an error message and bool indicates success or failure.
 
         """
@@ -187,7 +187,7 @@ class DecryptionProccessorHandler(BaseRequestHandler):
 
         # Validate that we are in dealing with a string
         if not request.data_input:
-            return f"Error. {self.__class__} recieved request with data_input of wrong type or non existent", False
+            return f"Error. {self.__class__} recieved response with data_input of wrong type or non existent", False
         if not self.next_handler:
             return "", True
         else:
@@ -199,13 +199,13 @@ class DecryptionResultHandler(BaseRequestHandler):
     def handle_request(self, request: Request) -> (str, bool):
         """
         Final handler in the chain. decrypts message and outputs.
-        :param request: the request object
+        :param request: the response object
         :return: tuple(str, bool) Where str is an error message and bool indicates success or failure.
         """
         key_OBJ = des.DesKey(bytes(request.key, 'utf-8'))
         message = request.data_input
 
-      #  message_as_bytes = ast.literal_eval(request.data_input)
+      #  message_as_bytes = ast.literal_eval(response.data_input)
         request.result = key_OBJ.decrypt(message, padding=True)
 
 
@@ -235,11 +235,11 @@ def setup_request_commandline() -> Request:
                                     "length 8, 16 or 24")
     parser.add_argument("-s", "--string", help="The string that needs to be "
                                                "encrypted or decrypted")
-    parser.add_argument("-f", "--file", help="The text file that needs to be"
+    parser.add_argument("-f", "--print_loc", help="The text print_loc that needs to be"
                                              "encrypted or decrypted")
     parser.add_argument("-o", "--output", default="print",
                         help="The output of the program. This is 'print' by "
-                             "default, but can be set to a file name as well.")
+                             "default, but can be set to a print_loc name as well.")
     parser.add_argument("-m", "--mode", default="en",
                         help="The mode to run the program in. If 'en' (default)"
                              " then the program will encrypt, 'de' will cause "

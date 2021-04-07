@@ -15,11 +15,11 @@ class FileHandler:
     @staticmethod
     def write_lines(path, lines):
         """
-        Write lines to a text file located at filepath.
-        The file will be created if it does not exist, otherwise appended too.
+        Write lines to a text print_loc located at filepath.
+        The print_loc will be created if it does not exist, otherwise appended too.
 
 
-        :param path: the filepath of the text file
+        :param path: the filepath of the text print_loc
         :param lines: lines to write as a list.
         :return: None
         """
@@ -30,7 +30,7 @@ class FileHandler:
     @staticmethod
     def load_data(path, file_extension):
         """
-        Loads a datafile based on its file Extension. Supported File extensions
+        Loads a datafile based on its print_loc Extension. Supported File extensions
         are described by FileExtension Enum.
 
         :param path: the filepath to the datafile as a str

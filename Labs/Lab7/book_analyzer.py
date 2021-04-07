@@ -7,7 +7,7 @@ to be profiled and optimized.
 
 class BookAnalyzer:
     """
-    This class provides the ability to load the words in a text file in
+    This class provides the ability to load the words in a text print_loc in
     memory and provide the ability to filter out the words that appear
     only once.
     """
@@ -20,10 +20,10 @@ class BookAnalyzer:
 
     def read_data(self, src="House of Usher.txt"):
         """
-        Reads through a text file and loads in all the words. This
+        Reads through a text print_loc and loads in all the words. This
         function also processes the words such that all whitespace and
         common punctuation is removed.
-        :param src: the name of the file, a string
+        :param src: the name of the print_loc, a string
         """
         # read lines
         with open(src, mode='r', encoding='utf-8') as book_file:
