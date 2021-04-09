@@ -66,6 +66,7 @@ class CityDatabase:
         # will raise an error if the path is invalid, we don't need an
         # if statement here
         df = pandas.read_excel(file_path)
+        df = df.dropna()
 
         """
         read in the cities using a dictionary comprehension
@@ -140,10 +141,37 @@ class ISSDataRequest:
 
     @classmethod
     def get_overhead_pass(cls, city: City) -> CityOverheadTimes:
-        pass
+
+        parameters = {
+
+            "lat": city.lat,
+            "lon": city.lng,
+        }
+        res = requests.get(url=ISSDataRequest.OPEN_NOTIFY_OVERHEAD_PASS_URL, params=parameters)
+        data = res.json()
+
+        over_head_times = CityOverheadTimes(city, *data['response'])
+        return over_head_times
+
         # Write request code here!
         # DEBUG:
         # print(response)
         # jprint(data)
+
+def main():
+    city_db = CityDatabase("city_locations_test.xlsx")
+    #queue = CityOverHeadTimeQueue()
+    test_city = City("Selkirk", 50.15, -96.8833)
+    print(ISSDataRequest.get_overhead_pass(test_city))
+
+    over_head_times =  [ ISSDataRequest.get_overhead_pass(city) for city in city_db.city_db ]
+
+    for i in over_head_times:
+        print(i)
+
+    #over_times = [ OverheadPassEvent(ISSDataRequest.get_overhead_pass(city))]
+
+if __name__ == '__main__':
+    main()
 
 
