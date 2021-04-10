@@ -66,7 +66,7 @@ class ConsumerThread(Thread):
             print(f"Consumer {self.name} consumed city {q_item.city}")
             print(q_item)
             print("sleeping for 0.5 seconds")
-            #time.sleep(0.5)
+            time.sleep(0.5)
         pass
 
 
@@ -93,11 +93,6 @@ def main():
     consumer_thread = ConsumerThread(q)
     consumer_thread.name = 1
 
-    # with ThreadPoolExecutor() as executor:
-    #       for producer in producers:
-    #           executor.submit(producer.run())
-    #       consumer_thread._data_incoming = False
-
     with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
         futures = []
         for producer in producers:
@@ -110,13 +105,6 @@ def main():
     end_time = datetime.datetime.now()
     print(f"Program took {end_time - start_time}")
 
-  # OLD
-  #
-  # with ThreadPoolExecutor() as executor:
-  #       for producer in producers:
-  #           executor.submit(producer.run())
-  #       consumer_thread._data_incoming = False
-  #       executor.submit(consumer_thread.run)
 
 if __name__ == '__main__':
     main()
