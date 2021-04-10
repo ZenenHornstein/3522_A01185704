@@ -1,5 +1,7 @@
 from concurrent.futures import ThreadPoolExecutor
+import concurrent.futures
 from threading import Thread, Lock
+import datetime
 import time
 import city_processor
 
@@ -39,12 +41,11 @@ class ProducerThread(Thread):
     def run(self) -> None:
         for city in self._city_list:
             over_head_pass = city_processor.ISSDataRequest.get_overhead_pass(city)
-            print(f"adding city number {len(self._queue)}:  {city.city_name} to Queue")
+            print(f"Producer {self.name} adding city number {len(self._queue)}:  {city.city_name} to Queue")
             self._queue.put(over_head_pass)
             if self._city_list.index(city) % 5 == 0 and self._city_list.index(city) > 0  == 0:
-                print("produced sleeping for 1")
+                print(f"producer {self.name} sleeping for 1")
                 time.sleep(1)
-        print("end of run function")
 
 
 
@@ -62,16 +63,21 @@ class ConsumerThread(Thread):
                 print("sleepping for 0.75 cuz q is empty")
                 time.sleep(0.75)
             q_item = self._queue.get()
+            print(f"Consumer {self.name} consumed city {q_item.city}")
             print(q_item)
             print("sleeping for 0.5 seconds")
+            #time.sleep(0.5)
         pass
 
 
 
 
 def main():
+
+    start_time = datetime.datetime.now()
+
     import city_processor
-    city_database = city_processor.CityDatabase("city_locations_test.xlsx")
+    city_database = city_processor.CityDatabase("city_locations.xlsx")
 
     size = len(city_database.city_db)
 
@@ -85,14 +91,32 @@ def main():
     producers = [ProducerThread(first_partition, q), ProducerThread(second_partition, q),
                  ProducerThread(third_partition, q)]
     consumer_thread = ConsumerThread(q)
+    consumer_thread.name = 1
 
-    with ThreadPoolExecutor() as executor:
+    # with ThreadPoolExecutor() as executor:
+    #       for producer in producers:
+    #           executor.submit(producer.run())
+    #       consumer_thread._data_incoming = False
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+        futures = []
         for producer in producers:
-            executor.submit(producer.run())
+            futures.append(executor.submit(producer.run))
+        executor.shutdown(wait=True)
         consumer_thread._data_incoming = False
-        executor.submit(consumer_thread.run)
+        consumer_thread.run()
 
 
+    end_time = datetime.datetime.now()
+    print(f"Program took {end_time - start_time}")
+
+  # OLD
+  #
+  # with ThreadPoolExecutor() as executor:
+  #       for producer in producers:
+  #           executor.submit(producer.run())
+  #       consumer_thread._data_incoming = False
+  #       executor.submit(consumer_thread.run)
 
 if __name__ == '__main__':
     main()
