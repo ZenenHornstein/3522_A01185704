@@ -1,5 +1,6 @@
 import argparse
 import request
+from aiohttp.client_exceptions import ContentTypeError
 from pokeretriever import async_request, pokedex_object, mode_enum
 import asyncio
 from facade_pokeretriever import FacadePokeretriever
@@ -35,7 +36,11 @@ def setup_command_line() -> request.Request:
 
 def main():
     request = setup_command_line()
-    FacadePokeretriever.execute_request(request)
+    try:
+        FacadePokeretriever.execute_request(request)
+    except ContentTypeError as e:
+        print("Something went wrong! please ensure your input source is correct!")
+
 
 
 
